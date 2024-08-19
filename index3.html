@@ -1,0 +1,53 @@
+const accounts = [
+    { name: "Alice", balance: 1000.0, pin: "1234" },
+    { name: "Bob", balance: 1500.0, pin: "5678" },
+    { name: "Charlie", balance: 2000.0, pin: "9101" }
+];
+
+let currentAccount = null;
+
+function login() {
+    const pin = document.getElementById('pin').value;
+    const account = accounts.find(acc => acc.pin === pin);
+
+    if (account) {
+        currentAccount = account;
+        document.getElementById('login').style.display = 'none';
+        document.getElementById('atmMenu').style.display = 'block';
+        document.getElementById('userName').textContent = account.name;
+        document.getElementById('atmMessage').textContent = '';
+        document.getElementById('loginMessage').textContent = '';
+    } else {
+        document.getElementById('loginMessage').textContent = 'Incorrect PIN. Please try again.';
+    }
+}
+
+function checkBalance() {
+    document.getElementById('atmMessage').textContent = Your balance is $${currentAccount.balance};
+}
+
+function deposit() {
+    const amount = parseFloat(prompt('Enter deposit amount:'));
+    if (amount > 0) {
+        currentAccount.balance += amount;
+        document.getElementById('atmMessage').textContent = Deposit successful. Your new balance is $${currentAccount.balance};
+    } else {
+        document.getElementById('atmMessage').textContent = 'Invalid deposit amount.';
+    }
+}
+
+function withdraw() {
+    const amount = parseFloat(prompt('Enter withdrawal amount:'));
+    if (amount > 0 && amount <= currentAccount.balance) {
+        currentAccount.balance -= amount;
+        document.getElementById('atmMessage').textContent = Withdrawal successful. Your new balance is $${currentAccount.balance};
+    } else {
+        document.getElementById('atmMessage').textContent = 'Invalid withdrawal amount or insufficient funds.';
+    }
+}
+
+function logout() {
+    currentAccount = null;
+    document.getElementById('login').style.display = 'block';
+    document.getElementById('atmMenu').style.display = 'none';
+}
